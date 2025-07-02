@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Membros - Academia Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#8666d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-slow': 'bounce 2s infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+
+        .achievement-badge {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-badge:hover {
+            transform: scale(1.1);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .form-valid {
+    border-color: #10B981 !important; /* Verde */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310B981'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5rem;
+}
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">A</span>
+                        </div>
+                        <span class="ml-2 text-xl font-bold text-gray-900">Academia Digital</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div id="notificationIcon" class="relative hidden cursor-pointer">
+                        <i class="fas fa-bell text-gray-600 hover:text-primary text-xl"></i>
+                        <span id="notificationCount" class="notification-dot hidden"></span>
+                    </div>
+                    <button id="loginBtn"
+                        class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+                        Login
+                    </button>
+                    <button id="signupBtn"
+                        class="bg-primary hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        Cadastrar
+                    </button>
+                    <div id="userMenu" class="hidden flex items-center space-x-3">
+                        <span id="userName" class="text-gray-700 text-sm"></span>
+                        <button id="logoutBtn" class="text-red-600 hover:text-red-800 text-sm">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page-->
+    <div id="homePage" class="min-h-screen">
+        <!-- Hero Section-->
+        <section class="gradient-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-5xl font-bold mb-6">Transforme sua Carreira Digital</h1>
+                <p class="text-xl mb-8 max-w-3xl mx-auto">Acesse cursos exclusivos, comunidade premium e ferramentas
+                    profissionais para acelerar seu crescimento no mundo digital.</p>
+                <button id="heroSignupBtn"
+                    class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-300">
+                    Começar Agora - Grátis
+                </button>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Por que se tornar membro?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 card-hover bg-gray-50 rounded-xl">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl">🎓</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Cursos Exclusivos</h3>
+                        <p class="text-gray-600">Acesso a mais de 50 cursos premium com certificação</p>
+                    </div>
+                    <div class="text-center p-6 card-hover bg-gray-50 rounded-xl">
+                        <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl">👥</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Comunidade Premium</h3>
+                        <p class="text-gray-600">Networking com profissionais de alto nível</p>
+                    </div>
+                    <div class="text-center p-6 card-hover bg-gray-50 rounded-xl">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl">🚀</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Mentoria Personalizada</h3>
+                        <p class="text-gray-600">Suporte direto de especialistas da área</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">O que nossos membros dizem</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm card-hover">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                                JD</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">João Dias</h4>
+                                <p class="text-gray-600 text-sm">Marketing Digital</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">"A Academia Digital transformou minha carreira. Em 6 meses consegui
+                            triplicar meus clientes!"</p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm card-hover">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                MS</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">Maria Silva</h4>
+                                <p class="text-gray-600 text-sm">UX/UI Design</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">"Os cursos são incríveis e a comunidade me ajudou a conseguir meu
+                            primeiro emprego na área."</p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm card-hover">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-bold">
+                                CP</div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">Carlos Pereira</h4>
+                                <p class="text-gray-600 text-sm">Desenvolvimento Web</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">"A mentoria personalizada foi o diferencial para eu conseguir fechar
+                            projetos internacionais."</p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Escolha seu Plano</h2>
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Free Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-2 border-gray-200">
+                        <h3 class="text-2xl font-bold text-center mb-4">Gratuito</h3>
+                        <div class="text-center mb-6">
+                            <span class="text-4xl font-bold">R$ 0</span>
+                            <span class="text-gray-600">/mês</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 3 cursos básicos
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Acesso à comunidade
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Suporte por email
+                            </li>
+                        </ul>
+                        <button
+                            class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 signup-btn"
+                            data-plan="free">
+                            Começar Grátis
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-2 border-primary relative">
+                        <div
+                            class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">
+                            Mais Popular
+                        </div>
+                        <h3 class="text-2xl font-bold text-center mb-4">Profissional</h3>
+                        <div class="text-center mb-6">
+                            <span class="text-4xl font-bold">R$ 97</span>
+                            <span class="text-gray-600">/mês</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Todos os cursos
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Comunidade premium
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Mentoria mensal
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Certificações</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Projetos práticos
+                            </li>
+                        </ul>
+                        <button
+                            class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 signup-btn"
+                            data-plan="pro">
+                            Assinar Agora
+                        </button>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-2 border-gray-200">
+                        <h3 class="text-2xl font-bold text-center mb-4">Premium</h3>
+                        <div class="text-center mb-6">
+                            <span class="text-4xl font-bold">R$ 197</span>
+                            <span class="text-gray-600">/mês</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Tudo do Pro</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Mentoria semanal
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Acesso VIP</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Consultoria 1:1
+                            </li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Portfólio
+                                profissional</li>
+                        </ul>
+                        <button
+                            class="w-full bg-secondary text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 signup-btn"
+                            data-plan="premium">
+                            Assinar Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Fazer Login</h2>
+            <form id="loginForm">              
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="loginEmail"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Senha</label>
+                    <input type="password" id="loginPassword"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                </div>
+                <div class="mb-4 flex items-center">
+                    <input type="checkbox" id="rememberMe" class="mr-2">
+                    <label for="rememberMe" class="text-sm text-gray-600">Lembrar de mim</label>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                    Entrar
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <button id="showSignupModal" class="text-primary hover:underline">Não tem conta? Cadastre-se</button>
+            </div>
+            <button id="closeLoginModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">✕</button>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Criar Conta</h2>
+            
+            <form id="signupForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nome Completo</label>
+                    <input type="text" id="signupName"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="signupEmail"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Senha</label>
+                    <input type="password" id="signupPassword"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                    <p class="text-xs text-gray-500 mt-1">Mínimo de 6 caracteres</p>
+                </div>
+                <input type="hidden" id="selectedPlan" value="free">
+                <button type="submit"
+                    class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                    Criar Conta
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <button id="showLoginModal" class="text-primary hover:underline">Já tem conta? Faça login</button>
+            </div>
+            <button id="closeSignupModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">✕</button>
+        </div>
+    </div>
+
+    <!-- Badges Modal -->
+    <div id="badgesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Suas Conquistas</h2>
+                <button id="closeBadgesModal" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="badgesList">
+                <!-- Badges serão preenchidas via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Dashboard -->
+    <div id="memberDashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Dashboard Header -->
+        <div class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                        <p class="text-gray-600">Bem-vindo de volta, <span id="dashboardUserName"></span>!</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span id="userPlanBadge" class="px-3 py-1 rounded-full text-sm font-semibold"></span>
+                        <button id="profileBtn" class="text-gray-600 hover:text-primary">👤 Perfil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Stats Cards -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl">📚</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-600 text-sm">Cursos Concluídos</p>
+                            <p class="text-2xl font-bold text-gray-900" id="completedCourses">3</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl">⏱️</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-600 text-sm">Horas Estudadas</p>
+                            <p class="text-2xl font-bold text-gray-900" id="hoursStudied">24h</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl">🏆</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-600 text-sm">Certificados</p>
+                            <p class="text-2xl font-bold text-gray-900" id="certificates">2</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl">📈</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-600 text-sm">Progresso Geral</p>
+                            <p class="text-2xl font-bold text-gray-900" id="overallProgress">75%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico no Dashboard -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4">Seu Progresso Mensal</h2>
+                <canvas id="progressChart"></canvas>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Left Column (2/3 width) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Courses Section -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">Seus Cursos</h2>
+                            <button id="viewAllCourses" class="text-primary text-sm font-medium hover:underline">Ver
+                                todos</button>
+                        </div>
+                        <div id="courseGrid" class="grid md:grid-cols-2 gap-6">
+                            <!-- Courses will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">Meus Projetos</h2>
+                            <button id="addProjectBtn" class="text-primary text-sm font-medium hover:underline">+
+                                Adicionar Projeto</button>
+                        </div>
+                        <div id="projectsGrid" class="grid md:grid-cols-2 gap-6">
+                            <!-- Projects will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (1/3 width) -->
+                <div class="space-y-6">
+                    <!-- Progress Card -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Progresso Atual</h3>
+                        <div class="space-y-4" id="courseProgressList">
+                            <!-- Progress bars will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Events -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Próximos Eventos</h3>
+                        <div class="space-y-4" id="upcomingEvents">
+                            <div class="flex items-start">
+                                <div class="bg-primary text-white rounded-lg p-2 mr-3">
+                                    <div class="text-center font-bold">15</div>
+                                    <div class="text-xs">JUL</div>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Live: Marketing Digital 2023</p>
+                                    <p class="text-sm text-gray-600">14:00 - 16:00</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-secondary text-white rounded-lg p-2 mr-3">
+                                    <div class="text-center font-bold">20</div>
+                                    <div class="text-xs">JUL</div>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Mentoria Coletiva</p>
+                                    <p class="text-sm text-gray-600">19:00 - 20:30</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="viewCalendarBtn"
+                            class="w-full mt-4 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition duration-300">
+                            Ver Calendário Completo
+                        </button>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Conquistas</h3>
+                        <div class="flex flex-wrap gap-3" id="achievementsBadges">
+                            <!-- Achievements will be populated by JavaScript -->
+                        </div>
+                        <button id="viewAllAchievements"
+                            class="w-full mt-4 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition duration-300">
+                            Ver Todas Conquistas
+                        </button>
+                    </div>
+
+                    <!-- Community Chat -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Chat da Comunidade</h3>
+                        <div class="space-y-3 mb-4" id="communityChatPreview">
+                            <div class="flex items-start space-x-3">
+                                <div
+                                    class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs">
+                                    JD</div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium">João Silva: Alguém já fez o projeto final do curso de
+                                        UX?</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div
+                                    class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-xs">
+                                    MS</div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium">Maria Santos: Sim! Posso te ajudar com algumas dicas
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Digite sua mensagem..."
+                                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
+                            <button
+                                class="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition duration-300">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Meu Perfil</h2>
+            <div class="space-y-4">
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-3xl font-bold"
+                            id="profileAvatar">
+                            <!-- Initials will be populated by JavaScript -->
+                        </div>
+                        <button id="changeAvatarBtn"
+                            class="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-sm">
+                            <i class="fas fa-camera text-xs text-gray-700"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nome</label>
+                    <input type="text" id="profileName"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="profileEmail"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100" readonly>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Plano Atual</label>
+                    <div id="currentPlan" class="px-3 py-2 bg-gray-100 rounded-lg text-gray-700"></div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Biografia</label>
+                    <textarea id="profileBio" rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"></textarea>
+                </div>
+            </div>
+            <div class="flex space-x-4 mt-6">
+                <button id="saveProfile"
+                    class="flex-1 bg-primary text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                    Salvar
+                </button>
+                <button id="closeProfileModal"
+                    class="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition duration-300">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div id="addProjectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Adicionar Projeto</h2>
+            <form id="addProjectForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Título do Projeto</label>
+                    <input type="text" id="projectTitle"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Descrição</label>
+                    <textarea id="projectDescription" rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                        required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Link (opcional)</label>
+                    <input type="url" id="projectLink"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Imagem (opcional)</label>
+                    <input type="file" id="projectImage"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div class="flex space-x-4 mt-6">
+                    <button type="submit"
+                        class="flex-1 bg-primary text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                        Salvar Projeto
+                    </button>
+                    <button type="button" id="cancelAddProject"
+                        class="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition duration-300">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div id="notificationsModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Notificações</h2>
+                <button id="closeNotificationsModal" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div class="space-y-4" id="notificationsList">
+                <!-- Notifications will be populated by JavaScript -->
+            </div>
+            <button id="markAllAsRead"
+                class="w-full mt-4 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition duration-300">
+                Marcar todas como lidas
+            </button>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievementsModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Todas Conquistas</h2>
+                <button id="closeAchievementsModal" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="allAchievementsList">
+                <!-- All achievements will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User data simulation
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+        // Projects data
+        let projects = JSON.parse(localStorage.getItem('projects') || '[]');
+
+        // Notifications data
+        let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+
+        // Achievements data
+        const achievementsData = [
+            { id: 1, name: 'Iniciante', description: 'Completou o primeiro curso', icon: '🎯', earned: true },
+            { id: 2, name: 'Estudante', description: 'Completou 5 horas de estudo', icon: '📚', earned: true },
+            { id: 3, name: 'Certificado', description: 'Obteve o primeiro certificado', icon: '🏆', earned: true },
+            { id: 4, name: 'Mestre', description: 'Completou 10 cursos', icon: '👑', earned: false },
+            { id: 5, name: 'Social', description: 'Participou de 5 discussões', icon: '💬', earned: false },
+            { id: 6, name: 'Projetos', description: 'Completou 3 projetos', icon: '🛠️', earned: false }
+        ];
+
+        // Course data based on plan
+        const courseData = {
+            free: [
+                { id: 1, title: 'Introdução ao Marketing Digital', progress: 100, level: 'Básico', duration: '2h' },
+                { id: 2, title: 'Fundamentos de Design', progress: 60, level: 'Básico', duration: '3h' },
+                { id: 3, title: 'Redes Sociais para Iniciantes', progress: 30, level: 'Básico', duration: '2.5h' }
+            ],
+            pro: [
+                { id: 4, title: 'Marketing Digital Avançado', progress: 80, level: 'Intermediário', duration: '8h' },
+                { id: 5, title: 'Design UX/UI Completo', progress: 60, level: 'Avançado', duration: '12h' },
+                { id: 6, title: 'Estratégias de Vendas Online', progress: 40, level: 'Intermediário', duration: '6h' },
+                { id: 7, title: 'Automação de Marketing', progress: 20, level: 'Avançado', duration: '10h' },
+                { id: 8, title: 'Analytics e Métricas', progress: 90, level: 'Intermediário', duration: '5h' },
+                { id: 9, title: 'Copywriting Persuasivo', progress: 70, level: 'Intermediário', duration: '4h' }
+            ],
+            premium: [
+                { id: 10, title: 'Masterclass: Funil de Vendas', progress: 85, level: 'Expert', duration: '15h' },
+                { id: 11, title: 'Consultoria Digital Avançada', progress: 50, level: 'Expert', duration: '20h' },
+                { id: 12, title: 'Liderança em Marketing', progress: 30, level: 'Expert', duration: '12h' },
+                { id: 13, title: 'Inovação e Tendências', progress: 10, level: 'Expert', duration: '8h' },
+                { id: 14, title: 'Mentoria Executiva', progress: 95, level: 'Expert', duration: '25h' },
+                { id: 15, title: 'Networking Estratégico', progress: 75, level: 'Expert', duration: '6h' }
+            ]
+        };
+
+        // Initialize app
+        function init() {
+            checkUserSession();
+            setupEventListeners();
+            generateSampleNotifications();
+        }
+
+        // Generate sample notifications
+        function generateSampleNotifications() {
+            if (notifications.length === 0) {
+                notifications = [
+                    {
+                        id: 1,
+                        title: 'Novo curso disponível',
+                        message: 'O curso "Marketing Avançado" foi adicionado à sua plataforma',
+                        date: '2023-07-10',
+                        read: false,
+                        type: 'course'
+                    },
+                    {
+                        id: 2,
+                        title: 'Mentoria agendada',
+                        message: 'Sua mentoria com o especialista foi agendada para 15/07',
+                        date: '2023-07-05',
+                        read: false,
+                        type: 'event'
+                    },
+                    {
+                        id: 3,
+                        title: 'Conquista desbloqueada',
+                        message: 'Você ganhou a conquista "Estudante" por completar 5 horas de estudo',
+                        date: '2023-07-03',
+                        read: true,
+                        type: 'achievement'
+                    }
+                ];
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+            }
+        }
+
+        // Check if user is logged in
+        function checkUserSession() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            } else {
+                showHomePage();
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation buttons
+            document.getElementById('loginBtn').addEventListener('click', () => showModal('loginModal'));
+            document.getElementById('signupBtn').addEventListener('click', () => showModal('signupModal'));
+            document.getElementById('heroSignupBtn').addEventListener('click', () => showModal('signupModal'));
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('profileBtn').addEventListener('click', () => showModal('profileModal'));
+            document.getElementById('notificationIcon').addEventListener('click', () => showModal('notificationsModal'));
+
+            // Modal controls
+            document.getElementById('closeLoginModal').addEventListener('click', () => hideModal('loginModal'));
+            document.getElementById('closeSignupModal').addEventListener('click', () => hideModal('signupModal'));
+            document.getElementById('closeProfileModal').addEventListener('click', () => hideModal('profileModal'));
+            document.getElementById('closeNotificationsModal').addEventListener('click', () => hideModal('notificationsModal'));
+            document.getElementById('closeAchievementsModal').addEventListener('click', () => hideModal('achievementsModal'));
+            document.getElementById('cancelAddProject').addEventListener('click', () => hideModal('addProjectModal'));
+            document.getElementById('showSignupModal').addEventListener('click', () => {
+                hideModal('loginModal');
+                showModal('signupModal');
+            });
+            document.getElementById('showLoginModal').addEventListener('click', () => {
+                hideModal('signupModal');
+                showModal('loginModal');
+            });
+
+            // Forms
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('signupForm').addEventListener('submit', handleSignup);
+            document.getElementById('saveProfile').addEventListener('click', saveProfile);
+            document.getElementById('addProjectForm').addEventListener('submit', handleAddProject);
+
+            // Dashboard buttons
+            document.getElementById('viewAllCourses').addEventListener('click', () => alert('Todos os cursos serão mostrados em uma nova página'));
+            document.getElementById('addProjectBtn').addEventListener('click', () => showModal('addProjectModal'));
+            document.getElementById('viewCalendarBtn').addEventListener('click', () => alert('Calendário completo será mostrado em uma nova página'));
+            document.getElementById('viewAllAchievements').addEventListener('click', () => showModal('achievementsModal'));
+            document.getElementById('markAllAsRead').addEventListener('click', markAllNotificationsAsRead);
+
+            // Plan selection buttons
+            document.querySelectorAll('.signup-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const plan = e.target.getAttribute('data-plan');
+                    document.getElementById('selectedPlan').value = plan;
+                    showModal('signupModal');
+                });
+            });
+        }
+
+        // Show/hide modals
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+
+            if (modalId === 'profileModal' && currentUser) {
+                document.getElementById('profileName').value = currentUser.name;
+                document.getElementById('profileEmail').value = currentUser.email;
+                document.getElementById('profileBio').value = currentUser.bio || '';
+                document.getElementById('currentPlan').textContent = currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1);
+
+                // Set profile avatar initials
+                const nameParts = currentUser.name.split(' ');
+                const initials = nameParts.length > 1
+                    ? nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)
+                    : nameParts[0].charAt(0);
+                document.getElementById('profileAvatar').textContent = initials;
+            }
+
+            if (modalId === 'notificationsModal') {
+                populateNotifications();
+            }
+
+            if (modalId === 'achievementsModal') {
+                populateAllAchievements();
+            }
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Handle login
+        function handleLogin(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                // Verifica se o usuário existe e a senha está correta
+                const user = users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    hideModal('loginModal');
+                    showDashboard();
+
+                    // Adiciona notificação de login
+                    addNotification('Login realizado', `Bem-vindo de volta, ${user.name}!`, 'system');
+                } else {
+                    // Feedback visual de erro
+                    document.getElementById('loginPassword').classList.add('border-red-500');
+                    alert('Email ou senha incorretos!');
+                }
+            }
+
+        // Handle signup
+        function handleSignup(e) {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const plan = document.getElementById('selectedPlan').value;
+
+                // Validação básica
+                if (password.length < 6) {
+                    alert('A senha deve ter pelo menos 6 caracteres!');
+                    return;
+                }
+
+                if (users.some(u => u.email === email)) {
+                    alert('Este email já está cadastrado!');
+                    return;
+                }
+
+                const newUser = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    password,
+                    plan,
+                    joinDate: new Date().toISOString(),
+                    stats: {
+                        completedCourses: 0,
+                        certificates: 0,
+                        hoursStudied: 0
+                    }
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+
+                // Login automático após cadastro
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                hideModal('signupModal');
+                showDashboard();
+            }
+
+        // Add a new notification
+        function addNotification(title, message, type) {
+            const newNotification = {
+                id: Date.now(),
+                title,
+                message,
+                date: new Date().toISOString(),
+                read: false,
+                type
+            };
+
+            notifications.unshift(newNotification);
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+
+            // Update notification icon
+            updateNotificationBadge();
+        }
+
+        // Mark all notifications as read
+        function markAllNotificationsAsRead() {
+            notifications.forEach(notification => {
+                notification.read = true;
+            });
+
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            populateNotifications();
+            updateNotificationBadge();
+        }
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const notificationCount = document.getElementById('notificationCount');
+
+            if (unreadCount > 0) {
+                notificationCount.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                notificationCount.classList.remove('hidden');
+            } else {
+                notificationCount.classList.add('hidden');
+            }
+        }
+
+        // Populate notifications modal
+        function populateNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            notificationsList.innerHTML = '';
+
+            notifications.forEach(notification => {
+                const notificationElement = document.createElement('div');
+                notificationElement.className = `p-3 rounded-lg ${notification.read ? 'bg-white' : 'bg-primary-50'}`;
+                notificationElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start">
+                            <div class="mr-3 mt-1">
+                                ${getNotificationIcon(notification.type)}
+                            </div>
+                            <div>
+                                <h4 class="font-bold ${notification.read ? 'text-gray-800' : 'text-primary'}">${notification.title}</h4>
+                                <p class="text-sm text-gray-600">${notification.message}</p>
+                                <p class="text-xs text-gray-500 mt-1">${formatDate(notification.date)}</p>
+                            </div>
+                        </div>
+                        ${!notification.read ? '<span class="w-2 h-2 bg-primary rounded-full"></span>' : ''}
+                    </div>
+                `;
+                notificationsList.appendChild(notificationElement);
+            });
+
+            updateNotificationBadge();
+        }
+
+        // Get appropriate icon for notification type
+        function getNotificationIcon(type) {
+            const icons = {
+                course: '📚',
+                event: '📅',
+                achievement: '🏆',
+                welcome: '👋',
+                system: '⚙️'
+            };
+            return icons[type] || '🔔';
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Handle add project
+        function handleAddProject(e) {
+            e.preventDefault();
+            const title = document.getElementById('projectTitle').value;
+            const description = document.getElementById('projectDescription').value;
+            const link = document.getElementById('projectLink').value;
+
+            const newProject = {
+                id: Date.now(),
+                userId: currentUser.id,
+                title,
+                description,
+                link,
+                date: new Date().toISOString(),
+                image: null // In a real app, you'd handle file upload here
+            };
+
+            projects.push(newProject);
+            localStorage.setItem('projects', JSON.stringify(projects));
+
+            hideModal('addProjectModal');
+            populateProjects();
+
+            // Add project notification
+            addNotification('Novo projeto adicionado', `Você adicionou o projeto "${title}" ao seu portfólio`, 'system');
+        }
+
+        // Save profile
+        function saveProfile() {
+            if (currentUser) {
+                const newName = document.getElementById('profileName').value;
+                const newBio = document.getElementById('profileBio').value;
+
+                currentUser.name = newName;
+                currentUser.bio = newBio;
+
+                // Update in users array
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                hideModal('profileModal');
+                updateDashboard();
+
+                // Add profile update notification
+                addNotification('Perfil atualizado', 'Suas informações de perfil foram atualizadas com sucesso', 'system');
+            }
+        }
+       
+        // Show home page
+        function showHomePage() {
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('memberDashboard').classList.add('hidden');
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('signupBtn').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+            document.getElementById('notificationIcon').classList.add('hidden');
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('memberDashboard').classList.remove('hidden');
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('signupBtn').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('notificationIcon').classList.remove('hidden');
+            updateDashboard();
+        }
+
+        // Update dashboard content
+        function updateDashboard() {
+            if (!currentUser) return;
+
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('dashboardUserName').textContent = currentUser.name;
+
+            // Update plan badge
+            const planBadge = document.getElementById('userPlanBadge');
+            const planColors = {
+                free: 'bg-gray-200 text-gray-800',
+                pro: 'bg-primary text-white',
+                premium: 'bg-secondary text-white'
+            };
+            planBadge.className = `px-3 py-1 rounded-full text-sm font-semibold ${planColors[currentUser.plan]}`;
+            planBadge.textContent = currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1);
+
+            // Update stats based on plan
+            const stats = {
+                free: { completed: 1, certificates: 0, hours: 5, progress: 30 },
+                pro: { completed: 3, certificates: 2, hours: 24, progress: 75 },
+                premium: { completed: 5, certificates: 4, hours: 42, progress: 90 }
+            };
+            // Validação dinâmica nos campos
+            document.querySelectorAll('#loginForm input, #signupForm input').forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.value.trim() !== '') {
+                        this.classList.add('form-valid');
+                    } else {
+                        this.classList.remove('form-valid');
+                    }
+                });
+            });
+
+            document.getElementById('completedCourses').textContent = stats[currentUser.plan].completed;
+            document.getElementById('certificates').textContent = stats[currentUser.plan].certificates;
+            document.getElementById('hoursStudied').textContent = stats[currentUser.plan].hours + 'h';
+            document.getElementById('overallProgress').textContent = stats[currentUser.plan].progress + '%';
+
+            // Populate courses and projects
+            populateCourses();
+            populateProjects();
+            populateAchievements();
+            updateNotificationBadge();
+        }
+
+        // Populate courses based on user plan
+        function populateCourses() {
+            const courseGrid = document.getElementById('courseGrid');
+            const courseProgressList = document.getElementById('courseProgressList');
+            const userCourses = courseData[currentUser.plan] || courseData.free;
+
+            courseGrid.innerHTML = userCourses.map(course => `
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">${course.title}</h3>
+                        <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">${course.level}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Duração: ${course.duration}</p>
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Progresso</span>
+                            <span>${course.progress}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: ${course.progress}%"></div>
+                        </div>
+                    </div>
+                    <button class="w-full bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition duration-300">
+                        ${course.progress === 100 ? 'Revisar Curso' : 'Continuar'}
+                    </button>
+                </div>
+            `).join('');
+
+            // Populate course progress in the sidebar
+            courseProgressList.innerHTML = userCourses.slice(0, 3).map(course => `
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>${course.title}</span>
+                        <span>${course.progress}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar h-2 rounded-full" style="width: ${course.progress}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Populate projects
+        function populateProjects() {
+            const projectsGrid = document.getElementById('projectsGrid');
+            const userProjects = projects.filter(p => p.userId === currentUser.id) || [];
+
+            if (userProjects.length === 0) {
+                projectsGrid.innerHTML = `
+                    <div class="col-span-2 text-center py-8">
+                        <i class="fas fa-folder-open text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Nenhum projeto adicionado ainda</p>
+                        <button id="addFirstProject" class="mt-4 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition duration-300">
+                            Adicionar Primeiro Projeto
+                        </button>
+                    </div>
+                `;
+                document.getElementById('addFirstProject').addEventListener('click', () => showModal('addProjectModal'));
+            } else {
+                projectsGrid.innerHTML = userProjects.slice(0, 4).map(project => `
+                    <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                        <h3 class="text-lg font-semibold mb-2">${project.title}</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${project.description}</p>
+                        ${project.link ? `<a href="${project.link}" target="_blank" class="text-primary text-sm hover:underline">Ver projeto</a>` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+
+
+        // Populate achievements
+        function populateAchievements() {
+            const achievementsBadges = document.getElementById('achievementsBadges');
+            const earnedAchievements = achievementsData.filter(a => a.earned);
+
+            achievementsBadges.innerHTML = earnedAchievements.map(achievement => `
+                <div class="achievement-badge tooltip">
+                    <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-2xl">
+                        ${achievement.icon}
+                    </div>
+                    <span class="tooltiptext">${achievement.name}: ${achievement.description}</span>
+                </div>
+            `).join('');
+        }
+        
+
+        // Populate all achievements (for modal)
+        function populateAllAchievements() {
+            const allAchievementsList = document.getElementById('allAchievementsList');
+
+            allAchievementsList.innerHTML = achievementsData.map(achievement => `
+                <div class="p-4 rounded-lg ${achievement.earned ? 'bg-green-50' : 'bg-gray-100 opacity-70'}">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full ${achievement.earned ? 'bg-yellow-100' : 'bg-gray-200'} flex items-center justify-center text-xl">
+                            ${achievement.icon}
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">${achievement.name}</h4>
+                            <p class="text-sm text-gray-600">${achievement.description}</p>
+                            <p class="text-xs mt-1 ${achievement.earned ? 'text-green-600' : 'text-gray-500'}">
+                                ${achievement.earned ? '✔ Conquistado' : 'Não conquistado ainda'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        // Exemplo de lógica de recomendação
+            function getRecommendedCourses() {
+                const userCourses = courseData[currentUser.plan];
+                const completedIds = userCourses.filter(c => c.progress === 100).map(c => c.id);
+
+                // Lógica fictícia: recomenda cursos do próximo nível
+                return userCourses.filter(course =>
+                    !completedIds.includes(course.id) &&
+                    course.progress < 50
+                ).slice(0, 3);
+            }
+
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
