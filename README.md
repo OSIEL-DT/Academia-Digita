@@ -19,21 +19,21 @@ Eventos e calendário
 
 Estatísticas de estudo
 
-🔔 Sistema de notificações
+🔔 Sistema de notificações:</br>
 
-💳 Planos de assinatura
+💳 Planos de assinatura</br>
 
-Gratuito
+Gratuito</br>
 
-Profissional
+Profissional</br>
 
-Premium
+Premium</br>
 
-💬 Chat da comunidade (estático)
+💬 Chat da comunidade (estático):</br>
 
 👤 Perfil editável
 
-🛠️ Tecnologias Utilizadas
+🛠️ Tecnologias Utilizadas:</br>
 HTML5
 
 TailwindCSS
@@ -46,7 +46,7 @@ Chart.js
 
 LocalStorage para persistência de dados
 
-📂 Estrutura de Arquivos
+📂 Estrutura de Arquivos:</br>
 bash
 Copy
 Edit
@@ -68,14 +68,14 @@ Crie uma conta ou faça login.
 
 Explore o painel personalizado com cursos, projetos e muito mais!
 
-🧪 Funcionalidades de Teste
+🧪 Funcionalidades de Teste</br>
 O sistema de login e cadastro simula persistência de dados via localStorage.
 
 Os dados são salvos no navegador — não há backend.
 
 As conquistas e notificações são geradas automaticamente ao interagir com o sistema.
 
-📦 Requisitos
+📦 Requisitos:</br>
 Para usar este projeto, você só precisa de um navegador moderno:
 
 Google Chrome
