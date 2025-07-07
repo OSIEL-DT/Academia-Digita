@@ -31,69 +31,69 @@ Premium</br>
 
 💬 Chat da comunidade (estático):</br>
 
-👤 Perfil editável
+👤 Perfil editável:</br>
 
 🛠️ Tecnologias Utilizadas:</br>
-HTML5
+HTML5</br>
 
-TailwindCSS
+TailwindCSS</br>
 
-JavaScript Vanilla
+JavaScript Vanilla</br>
 
-Font Awesome
+Font Awesome</br>
 
-Chart.js
+Chart.js</br>
 
-LocalStorage para persistência de dados
+LocalStorage para persistência de dados</br>
 
 📂 Estrutura de Arquivos:</br>
-bash
-Copy
-Edit
+bash</br>
+Copy</br>
+Edit</br>
 index2.html     # Arquivo principal contendo todo o HTML, CSS e JS
-💡 Como Usar
-Abra o arquivo index2.html em seu navegador.
+💡 Como Usar</br>
+Abra o arquivo index2.html em seu navegador.</br>
 
-Navegue pelas seções:
+Navegue pelas seções:</br>
 
-Home
+Home</br>
 
-Planos
+Planos</br>
 
-Benefícios
+Benefícios</br>
 
-Depoimentos
+Depoimentos</br>
 
-Crie uma conta ou faça login.
+Crie uma conta ou faça login.</br>
 
-Explore o painel personalizado com cursos, projetos e muito mais!
+Explore o painel personalizado com cursos, projetos e muito mais!</br>
 
 🧪 Funcionalidades de Teste</br>
-O sistema de login e cadastro simula persistência de dados via localStorage.
+O sistema de login e cadastro simula persistência de dados via localStorage.</br>
 
-Os dados são salvos no navegador — não há backend.
+Os dados são salvos no navegador — não há backend.</br>
 
-As conquistas e notificações são geradas automaticamente ao interagir com o sistema.
+As conquistas e notificações são geradas automaticamente ao interagir com o sistema.</br>
 
 📦 Requisitos:</br>
-Para usar este projeto, você só precisa de um navegador moderno:
+Para usar este projeto, você só precisa de um navegador moderno:</br>
 
-Google Chrome
+Google Chrome</br>
 
-Firefox
+Firefox</br>
 
-Edge
+Edge</br>
 
-Safari
+Safari</br>
 
-📝 Considerações Finais
-Este projeto é um excelente ponto de partida para transformar um protótipo em uma aplicação real com backend e banco de dados. Pode ser facilmente adaptado para:
+📝 Considerações Finais</br>
+Este projeto é um excelente ponto de partida para transformar um protótipo em uma aplicação real com backend e banco de dados. Pode ser facilmente adaptado para:</br>
 
-Plataformas de cursos
+Plataformas de cursos</br>
 
-Portais de membros pagos
+Portais de membros pagos</br>
 
-Intranets educacionais
+Intranets educacionais</br>
 
 👨‍💻 Autor</br>
 Desenvolvido por Osiel
