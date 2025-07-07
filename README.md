@@ -95,5 +95,5 @@ Portais de membros pagos
 
 Intranets educacionais
 
-👨‍💻 Autor
+👨‍💻 Autor</br>
 Desenvolvido por Osiel
